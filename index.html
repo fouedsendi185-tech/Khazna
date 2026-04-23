@@ -100,6 +100,265 @@ function sendMsg(){
   input.value='';
 }
 </script>
+<!-- ===== بداية الإضافات الملكية V6.0 ===== -->
 
+<!-- 1. شاشة القفل - حطها بعد <body> مباشرة. إذا ما تقدر، خليها هنا وتشتغل -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // نقل المحتوى القديم داخل main
+    const oldContent = document.body.innerHTML;
+    document.body.innerHTML = `
+    <div id="lockScreen">
+        <h2>⚜️ مركبة الفؤاد السرية</h2>
+        <p style="margin-bottom:20px; color:#FFD700;">أدخل كلمة المرور الملكية للدخول</p>
+        <input type="password" id="passInput" placeholder="كلمة السر">
+        <button onclick="unlock()">دخول</button>
+        <p id="lockMsg" style="color:red; margin-top:15px;"></p>
+    </div>
+    <div class="main" id="mainApp">${oldContent}</div>`;
+});
+</script>
+
+<!-- 2. CSS الإضافات الملكية -->
+<style>
+#lockScreen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
+    z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column;
+}
+#lockScreen h2 { font-size: 2.5rem; margin-bottom: 20px; text-shadow: 0 0 20px #FFD700; color:#FFD700; }
+#lockScreen input { padding: 15px; font-size: 1.2rem; background: #111; border: 2px solid #FFD700; color: #FFD700; border-radius: 10px; text-align: center; width: 250px; }
+#lockScreen button { margin-top: 15px; padding: 12px 30px; background: #FFD700; color: #000; border: none; border-radius: 10px; font-weight: 900; font-size: 1.1rem; cursor: pointer; }
+.main { display: none; }
+.royal-buttons { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
+.royal-btn { background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; border: none; padding: 15px 20px; border-radius: 50px; font-size: 1rem; font-weight: 900; cursor: pointer; box-shadow: 0 5px 25px rgba(255,215,0,0.6); }
+#fileView embed { width: 100%; height: 500px; border-radius: 10px; }
+#fileView img { max-width: 100%; border-radius: 10px; }
+</style>
+
+<!-- 3. الأزرار الملكية الإضافية -->
+<div class="royal-buttons">
+    <button class="royal-btn" onclick="openModal('fileModal')">📁 الملفات</button>
+    <button class="royal-btn" onclick="toggleStealth()" style="background:linear-gradient(45deg, #555, #999);">👁️ تخفي</button>
+</div>
+
+<!-- 4. نافذة الملفات PDF/صور -->
+<div id="fileModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('fileModal')">&times;</span>
+        <h2 style="color:#FFD700; text-align:center;">عارض الملفات السري PDF/صور</h2>
+        <input type="file" id="fileInput" accept=".pdf,image/*" onchange="loadFile()" style="width:100%; padding:12px; margin:8px 0; border-radius:8px; border:2px solid #FFD700; background:#111; color:#FFD700;">
+        <div id="fileView" style="margin-top:15px;"></div>
+    </div>
+</div>
+
+<!-- 5. الجافاسكريبت الناقص كامل -->
+<script>
+// ===== كلمة السر الحالية ⚜️ =====
+const MASTER_PASSWORD = "FouadKing2026";
+
+// ===== نظام القفل =====
+function unlock() {
+    if(document.getElementById('passInput').value === MASTER_PASSWORD) {
+        document.getElementById('lockScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        localStorage.setItem('fouadUnlocked', 'true');
+    } else {
+        document.getElementById('lockMsg').innerText = 'كلمة السر غلط يا ملك';
+    }
+}
+// تشغيل تلقائي لو مسجل دخول
+setTimeout(() => {
+    if(localStorage.getItem('fouadUnlocked') === 'true') {
+        document.getElementById('lockScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+    }
+}, 100);
+
+// ===== إضافة تطبيق البريد التونسي للمتجر الموجود =====
+document.addEventListener('DOMContentLoaded', function() {
+    // نضيف زر البريد التونسي
+    const appGrid = document.querySelector('.app-grid');
+    if(appGrid && !document.getElementById('postAppBtn')) {
+        appGrid.innerHTML += `<div class="app-card" id="postAppBtn" onclick="showApp('postApp')"><h3>💳 البريد التونسي</h3></div>`;
+    }
+    
+    // نضيف نافذة البريد التونسي
+    const modalContent = document.querySelector('#storeModal .modal-content');
+    if(modalContent && !document.getElementById('postApp')) {
+        modalContent.innerHTML += `
+        <div id="postApp" class="app-window" style="display:none; margin-top:25px; background:rgba(0,0,0,0.5); padding:20px; border-radius:15px; border:1px solid #FFD700;">
+            <h3>بوابة البريد التونسي</h3>
+            <p style="color:#FFA500;">الصق رابط الدفع من البريد التونسي:</p>
+            <input type="text" id="postLink" placeholder="https://www.poste.tn/.... او رابط e-dinar" style="width:100%; padding:12px; margin:8px 0; border-radius:8px; border:2px solid #FFD700; background:#111; color:#FFD700;">
+            <button onclick="openPostLink()" style="background:#FFD700; color:#000; font-weight:900; cursor:pointer; border:none; padding:12px; border-radius:8px; margin:5px 0; width:100%;">💳 افتح بوابة الدفع</button>
+            <button onclick="savePostLink()" style="background:#FFD700; color:#000; font-weight:900; cursor:pointer; border:none; padding:12px; border-radius:8px; margin:5px 0; width:100%;">💾 حفظ الرابط</button>
+            <div class="result" id="postResult" style="background:#000; padding:15px; margin-top:15px; border-radius:8px; border:1px solid #FFD700;">لم يتم حفظ رابط بعد</div>
+        </div>`;
+    }
+});
+
+// ===== تشفير المفكرة - استبدال الدوال القديمة =====
+function encrypt(text) { return btoa(unescape(encodeURIComponent(text))); }
+function decrypt(text) { try { return decodeURIComponent(escape(atob(text))); } catch { return ''; } }
+
+// استبدل دالة saveNote القديمة بهذي
+window.saveNote = function() {
+    const txt = document.getElementById('noteText').value;
+    localStorage.setItem('fouadSecretNote', encrypt(txt));
+    document.getElementById('noteResult').innerText = 'تم الحفظ مشفر 🔒 ' + new Date().toLocaleTimeString();
+}
+
+// استبدل دالة loadNote القديمة بهذي  
+window.loadNote = function() {
+    const enc = localStorage.getItem('fouadSecretNote');
+    document.getElementById('noteText').value = enc ? decrypt(enc) : '';
+    document.getElementById('noteResult').innerText = enc ? 'تم الفتح 🔓' : 'لا يوجد';
+}
+
+// ===== البريد التونسي =====
+function savePostLink() {
+    const link = document.getElementById('postLink').value;
+    localStorage.setItem('fouadPostLink', link);
+    document.getElementById('postResult').innerText = 'تم حفظ الرابط ✅';
+}
+function openPostLink() {
+    const link = localStorage.getItem('fouadPostLink') || document.getElementById('postLink').value;
+    if(link) window.open(link, '_blank');
+    else alert('حط رابط البريد التونسي أول');
+}
+// تحميل الرابط المحفوظ
+setTimeout(() => {
+    if(localStorage.getItem('fouadPostLink') && document.getElementById('postLink')) {
+        document.getElementById('postLink').value = localStorage.getItem('fouadPostLink');
+        document.getElementById('postResult').innerText = 'يوجد رابط محفوظ ✅';
+    }
+}, 500);
+
+// ===== الملفات =====
+function loadFile() {
+    const file = document.getElementById('fileInput').files[0];
+    const view = document.getElementById('fileView');
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        if(file.type.includes('pdf')) {
+            view.innerHTML = `<embed src="${e.target.result}" type="application/pdf">`;
+        } else {
+            view.innerHTML = `<img src="${e.target.result}">`;
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+// ===== وضع التخفي =====
+let stealth = false;
+function toggleStealth() {
+    stealth = !stealth;
+    document.body.style.opacity = stealth ? '0.05' : '1';
+    if(stealth) alert('وضع التخفي مفعّل 👁️ اضغط الزر مرة ثانية للإظهار');
+}<!-- ===== لوحة التحكم السرية V6.1 ===== -->
+<div id="adminPanel" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); z-index:10000; overflow-y:auto;">
+    <div style="max-width:600px; margin:30px auto; background:#1a1a1a; border:3px solid #FFD700; border-radius:20px; padding:30px;">
+        <h2 style="color:#FFD700; text-align:center;">⚜️ لوحة التحكم الملكية</h2>
+        <span onclick="closeAdmin()" style="position:absolute; top:15px; left:20px; color:#FFD700; font-size:40px; cursor:pointer;">&times;</span>
+        
+        <h3 style="color:#FFD700; margin-top:20px;">1. تغيير كلمة السر</h3>
+        <input type="password" id="newPass" placeholder="كلمة السر الجديدة" style="width:100%; padding:12px; margin:8px 0; border-radius:8px; border:2px solid #FFD700; background:#111; color:#FFD700;">
+        <button onclick="changePass()" style="width:100%; background:#FFD700; color:#000; font-weight:900; padding:12px; border:none; border-radius:8px; margin:5px 0;">💾 حفظ كلمة السر</button>
+        
+        <h3 style="color:#FFD700; margin-top:20px;">2. رابط البريد التونسي</h3>
+        <input type="text" id="adminPostLink" placeholder="https://www.poste.tn/..." style="width:100%; padding:12px; margin:8px 0; border-radius:8px; border:2px solid #FFD700; background:#111; color:#FFD700;">
+        <button onclick="saveAdminPost()" style="width:100%; background:#FFD700; color:#000; font-weight:900; padding:12px; border:none; border-radius:8px; margin:5px 0;">💾 حفظ رابط البريد</button>
+        
+        <h3 style="color:#FFD700; margin-top:20px;">3. تغيير اسم الموقع</h3>
+        <input type="text" id="siteName" placeholder="مركبة الفؤاد" style="width:100%; padding:12px; margin:8px 0; border-radius:8px; border:2px solid #FFD700; background:#111; color:#FFD700;">
+        <button onclick="changeTitle()" style="width:100%; background:#FFD700; color:#000; font-weight:900; padding:12px; border:none; border-radius:8px; margin:5px 0;">💾 حفظ الاسم</button>
+        
+        <div id="adminMsg" style="background:#000; padding:15px; margin-top:15px; border-radius:8px; border:1px solid #FFD700; color:#FFD700; text-align:center;"></div>
+    </div>
+</div>
+
+<script>
+// كلمة السر السرية لفتح لوحة التحكم
+const ADMIN_CODE = "admin2026"; // غيّرها لو تبي
+
+// فتح لوحة التحكم: اكتب في الشات "افتح الادارة admin2026"
+function openAdmin() {
+    document.getElementById('adminPanel').style.display = 'block';
+    // تحميل القيم المحفوظة
+    document.getElementById('adminPostLink').value = localStorage.getItem('fouadPostLink') || '';
+    document.getElementById('siteName').value = localStorage.getItem('siteTitle') || 'مركبة الفؤاد';
+}
+function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
+
+// تغيير كلمة السر
+function changePass() {
+    const newPass = document.getElementById('newPass').value;
+    if(newPass.length < 6) { adminMsg('كلمة السر لازم 6 حروف على الأقل'); return; }
+    localStorage.setItem('customPassword', newPass);
+    adminMsg('تم تغيير كلمة السر ✅ سكّر الموقع وافتحه من جديد');
+}
+
+// حفظ رابط البريد
+function saveAdminPost() {
+    const link = document.getElementById('adminPostLink').value;
+    localStorage.setItem('fouadPostLink', link);
+    adminMsg('تم حفظ رابط البريد التونسي ✅');
+}
+
+// تغيير اسم الموقع
+function changeTitle() {
+    const name = document.getElementById('siteName').value;
+    localStorage.setItem('siteTitle', name);
+    document.title = name;
+    document.querySelector('.header h1').innerText = '⚜️ ' + name;
+    adminMsg('تم تغيير الاسم ✅');
+}
+
+function adminMsg(txt) { document.getElementById('adminMsg').innerText = txt; }
+
+// تعديل دالة القفل عشان تقرأ كلمة السر الجديدة
+const originalUnlock = unlock;
+unlock = function() {
+    const savedPass = localStorage.getItem('customPassword') || MASTER_PASSWORD;
+    if(document.getElementById('passInput').value === savedPass) {
+        document.getElementById('lockScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        localStorage.setItem('fouadUnlocked', 'true');
+        // تحميل الاسم المحفوظ
+        const savedTitle = localStorage.getItem('siteTitle');
+        if(savedTitle) {
+            document.title = savedTitle;
+            document.querySelector('.header h1').innerText = '⚜️ ' + savedTitle;
+        }
+    } else {
+        document.getElementById('lockMsg').innerText = 'كلمة السر غلط يا ملك';
+    }
+}
+
+// كود سري: لو كتبت في الشات "افتح الادارة admin2026" تفتح اللوحة
+const originalSendMsg = sendMsg;
+sendMsg = function() {
+    const input = document.getElementById('userInput');
+    const msg = input.value.trim();
+    if(msg === 'افتح الادارة ' + ADMIN_CODE) {
+        openAdmin();
+        input.value = '';
+        addMsg('تم فتح لوحة التحكم السرية ⚜️', 'ai');
+        return;
+    }
+    originalSendMsg();
+}
+</script>
+<!-- ===== نهاية لوحة التحكم ===== -->
+
+// ===== دوال النوافذ لو مش موجودة =====
+if(typeof openModal === 'undefined') {
+    window.openModal = function(id) { document.getElementById(id).style.display = 'block'; }
+    window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+}
+</script>
+
+<!-- ===== نهاية الإضافات الملكية V6.0 ===== -->
 </body>
-</html>
+</html> 
