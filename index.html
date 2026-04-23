@@ -1,173 +1,105 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>خزنة إيهاب</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مركبة الفؤاد V5.2 الذكية ⚜️</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
-html,body{width:100vw;height:100vh;overflow:hidden;background:#000;color:#eee}
-#lock{position:fixed;inset:0;background:#000;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-#lock h1{color:#FFD700;font-size:24px;margin-bottom:25px;font-weight:900;letter-spacing:2px}
-#lock input{background:#111;border:2px solid #FFD700;border-radius:12px;padding:18px;color:#FFD700;font-size:18px;text-align:center;width:100%;max-width:300px;letter-spacing:4px;margin-bottom:15px}
-#lock button{background:#FFD700;color:#000;border:0;border-radius:12px;padding:16px;font-size:17px;font-weight:900;width:100%;max-width:300px}
-#lock.err{color:#ff2d55;margin-top:12px;height:20px;font-size:14px}
-#app{display:none;flex-direction:column;height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0}
-.head{background:#111;padding:14px;border-bottom:2px solid #FFD700;display:flex;justify-content:space-between;align-items:center}
-.head h2{color:#FFD700;font-size:18px;font-weight:900}
-.head button{background:transparent;border:1px solid #ff2d55;color:#ff2d55;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px}
-.list{flex:1;overflow-y:auto;padding:12px}
-.item{background:#111;border:1px solid #222;border-radius:12px;padding:14px;margin-bottom:10px}
-.item h3{color:#FFD700;margin-bottom:6px;font-size:15px}
-.item p{font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
-.item.date{color:#00f7ff;font-size:11px;margin-top:8px;opacity:0.6}
-.item.act{display:flex;gap:8px;margin-top:10px}
-.item button{flex:1;padding:7px;border-radius:8px;border:0;font-weight:700;font-size:12px}
-.edit{background:#00f7ff;color:#000}
-.del{background:#ff2d55;color:#fff}
-.fab{position:fixed;bottom:20px;left:20px;width:56px;height:56px;background:#FFD700;color:#000;border:0;border-radius:50%;font-size:28px;font-weight:900}
-#edit{position:fixed;inset:0;background:#000;z-index:50;display:none;flex-direction:column}
-.edit-top{background:#111;padding:12px;display:flex;gap:8px;border-bottom:2px solid #FFD700}
-.edit-top input{flex:1;background:#000;border:1px solid #00f7ff;border-radius:8px;padding:11px;color:#eee;font-size:15px}
-.edit-top button{padding:11px 18px;border:0;border-radius:8px;font-weight:900;font-size:14px}
-.save{background:#00ff9d;color:#000}
-.cancel{background:#333;color:#fff}
-#edit textarea{flex:1;background:#000;border:0;padding:18px;color:#eee;font-size:15px;line-height:1.7;resize:none}
-#edit textarea:focus{outline:none}
-.empty{color:#555;text-align:center;margin-top:40px;font-size:14px}
+:root{--gold:#FFD700;--dark:#000}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--dark);color:var(--gold);font-family:system-ui;min-height:100vh}
+.header{padding:20px;text-align:center;border-bottom:1px solid #333}
+.header h1{font-size:2rem;text-shadow:0 0 15px var(--gold)}
+.store-btn{position:fixed;bottom:20px;left:20px;background:var(--gold);color:#000;width:60px;height:60px;border-radius:18px;border:none;font-size:2rem;box-shadow:0 0 20px var(--gold);cursor:pointer;z-index:999}
+.apps-modal{position:fixed;inset:0;background:#000e;display:none;z-index:1000}
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;padding:20px;max-width:600px;margin:80px auto}
+.app-card{background:#111;border:1px solid #333;border-radius:15px;padding:20px;text-align:center;cursor:pointer}
+.app-card:hover{border-color:var(--gold);box-shadow:0 0 15px #FFD70040}
+.chat-box{max-width:700px;margin:20px auto;padding:20px}
+.msg{background:#111;padding:15px;border-radius:12px;margin:10px 0;border-right:3px solid var(--gold)}
+.input-row{display:flex;gap:10px;max-width:700px;margin:20px auto;padding:0 20px}
+input{flex:1;background:#111;border:1px solid #333;color:var(--gold);padding:12px;border-radius:10px;font-size:1rem}
+button{background:var(--gold);color:#000;border:none;padding:12px 20px;border-radius:10px;font-weight:bold;cursor:pointer}
+.close-btn{position:fixed;top:20px;left:20px;background:#333;color:var(--gold);width:40px;height:40px;border-radius:50%;border:none;font-size:1.5rem}
 </style>
 </head>
 <body>
 
-<div id="lock">
-  <h1>⚜️ خزنة إيهاب</h1>
-  <input type="password" id="pass" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter')unlock()">
-  <button onclick="unlock()">فتح</button>
-  <div class="err" id="err"></div>
+<div class="header">
+  <h1 id="site-title">⚜️ مركبة الفؤاد V5.2 ⚜️</h1>
+  <p id="site-desc">المنظومة الذكية للتحديث عن بعد</p>
 </div>
 
-<div id="app">
-  <div class="head">
-    <h2>نواتي المخفية</h2>
-    <button onclick="lock()">قفل الخزنة</button>
-  </div>
-  <div class="list" id="list"></div>
-  <button class="fab" onclick="newNote()">+</button>
+<div class="chat-box" id="chat">
+  <div class="msg">مرحبا فؤاد. أنا الذكاء المدمج. اطلب مني أي شيء.</div>
 </div>
 
-<div id="edit">
-  <div class="edit-top">
-    <input type="text" id="title" placeholder="العنوان">
-    <button class="cancel" onclick="closeEdit()">إلغاء</button>
-    <button class="save" onclick="saveNote()">حفظ</button>
-  </div>
-  <textarea id="content" placeholder="اكتب نوتك هنا..."></textarea>
+<div class="input-row">
+  <input id="userInput" placeholder="اكتب أمرك هنا...">
+  <button onclick="sendMsg()">إرسال</button>
+</div>
+
+<button class="store-btn" onclick="toggleStore()">⚜️</button>
+
+<div class="apps-modal" id="store">
+  <button class="close-btn" onclick="toggleStore()">×</button>
+  <div class="apps-grid" id="appsGrid"></div>
 </div>
 
 <script>
-const KEY='IHAB_SECRET_VAULT';
-let PASS=null,notes=[],editId=null;
-
-async function hash(s){const e=new TextEncoder();const b=await crypto.subtle.digest('SHA-256',e.encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
-async function enc(t,p){const e=new TextEncoder();const s=crypto.getRandomValues(new Uint8Array(16));const k=await crypto.subtle.importKey('raw',e.encode(p),'PBKDF2',false,['deriveKey']);const dk=await crypto.subtle.deriveKey({name:'PBKDF2',salt:s,iterations:100000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt']);const iv=crypto.getRandomValues(new Uint8Array(12));const c=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},dk,e.encode(t));const r=new Uint8Array(s.length+iv.length+c.byteLength);r.set(s,0);r.set(iv,s.length);r.set(new Uint8Array(c),s.length+iv.length);return btoa(String.fromCharCode(...r))}
-async function dec(d,p){try{const b=new Uint8Array(atob(d).split('').map(c=>c.charCodeAt(0)));const s=b.slice(0,16);const iv=b.slice(16,28);const c=b.slice(28);const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(p),'PBKDF2',false,['deriveKey']);const dk=await crypto.subtle.deriveKey({name:'PBKDF2',salt:s,iterations:100000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);const t=await crypto.subtle.decrypt({name:'AES-GCM',iv:iv},dk,c);return new TextDecoder().decode(t)}catch(e){return null}}
-
-async function unlock(){
-  const p=document.getElementById('pass').value;
-  if(!p)return;
-  const s=localStorage.getItem(KEY);
-  if(!s){
-    const h=await hash(p);
-    localStorage.setItem(KEY,JSON.stringify({h:h,n:[]}));
-    PASS=p;showApp();
-  }else{
-    const d=JSON.parse(s);
-    const h=await hash(p);
-    if(h===d.h){
-      PASS=p;notes=[];
-      for(let n of d.n){const t=await dec(n,p);if(t)notes.push(JSON.parse(t))}
-      showApp();
-    }else{
-      document.getElementById('err').innerText='كلمة المرور خاطئة';
-      if(navigator.vibrate)navigator.vibrate(200);
-    }
+// ⚜️ هذا الجزء الوحيد اللي تعدله بعدين - فقط هذا ⚜️
+const CONFIG = {
+  title: "⚜️ مركبة الفؤاد V5.2 ⚜️",
+  desc: "المنظومة الذكية للتحديث عن بعد",
+  apps: [
+    {name:"الحاسبة الملكية",icon:"🧮",action:"alert('الحاسبة شغالة')"},
+    {name:"مولد الأسماء",icon:"✨",action:"alert('مولد الأسماء جاهز')"},
+    {name:"الخزنة",icon:"🔐",action:"alert('الخزنة مغلقة')"},
+    {name:"المفكرة",icon:"📝",action:"alert('المفكرة الملكية')"}
+  ],
+  aiReplies: {
+    "مرحبا":"أهلا يا ملك فؤاد ⚜️",
+    "كيف حالك":"بأفضل حال مادمت أنت بخير",
+    "default":"تم استلام أمرك. جاري التنفيذ يا فؤاد..."
   }
+};
+// لا تلمس شي تحت هذا الخط إلا إذا تبي تطور
+document.getElementById('site-title').innerText = CONFIG.title;
+document.getElementById('site-desc').innerText = CONFIG.desc;
+
+function toggleStore(){
+  const s = document.getElementById('store');
+  s.style.display = s.style.display==='block'? 'none' : 'block';
+  loadApps();
 }
 
-function showApp(){
-  document.getElementById('lock').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('pass').value='';
-  render();
-  if(navigator.vibrate)navigator.vibrate(50);
-}
-
-function lock(){
-  PASS=null;notes=[];
-  document.getElementById('app').style.display='none';
-  document.getElementById('lock').style.display='flex';
-  document.getElementById('list').innerHTML='';
-}
-
-function render(){
-  const l=document.getElementById('list');
-  if(notes.length===0){l.innerHTML='<div class="empty">لا توجد نوتات<br>اضغط + للإضافة</div>';return}
-  l.innerHTML=notes.map(n=>`
-    <div class="item">
-      <h3>${n.t||'بدون عنوان'}</h3>
-      <p>${n.c}</p>
-      <div class="date">${new Date(n.d).toLocaleString('ar-SA')}</div>
-      <div class="act">
-        <button class="edit" onclick="editNote('${n.id}')">تعديل</button>
-        <button class="del" onclick="delNote('${n.id}')">حذف</button>
-      </div>
+function loadApps(){
+  const grid = document.getElementById('appsGrid');
+  grid.innerHTML = CONFIG.apps.map(app => `
+    <div class="app-card" onclick="${app.action}">
+      <div style="font-size:2.5rem">${app.icon}</div>
+      <div style="margin-top:10px">${app.name}</div>
     </div>
   `).join('');
 }
 
-function newNote(){
-  editId=null;
-  document.getElementById('title').value='';
-  document.getElementById('content').value='';
-  document.getElementById('edit').style.display='flex';
-}
-
-function editNote(id){
-  const n=notes.find(x=>x.id===id);
-  if(!n)return;
-  editId=id;
-  document.getElementById('title').value=n.t;
-  document.getElementById('content').value=n.c;
-  document.getElementById('edit').style.display='flex';
-}
-
-async function saveNote(){
-  const t=document.getElementById('title').value.trim();
-  const c=document.getElementById('content').value.trim();
-  if(!c)return;
-  const n={id:editId||Date.now().toString(),t:t,c:c,d:new Date().toISOString()};
-  if(editId){const i=notes.findIndex(x=>x.id===editId);notes[i]=n}else{notes.unshift(n)}
-  await persist();
-  closeEdit();render();
-  if(navigator.vibrate)navigator.vibrate(50);
-}
-
-function closeEdit(){document.getElementById('edit').style.display='none'}
-
-async function delNote(id){
-  if(!confirm('متأكد تحذف؟'))return;
-  notes=notes.filter(x=>x.id!==id);
-  await persist();render();
-  if(navigator.vibrate)navigator.vibrate([100,50,100]);
-}
-
-async function persist(){
-  const en=[];
-  for(let n of notes){const e=await enc(JSON.stringify(n),PASS);en.push(e)}
-  const h=await hash(PASS);
-  localStorage.setItem(KEY,JSON.stringify({h:h,n:en}));
+function sendMsg(){
+  const input = document.getElementById('userInput');
+  const chat = document.getElementById('chat');
+  const text = input.value.trim();
+  if(!text) return;
+  chat.innerHTML += `<div class="msg">أنت: ${text}</div>`;
+  let reply = CONFIG.aiReplies.default;
+  for(let key in CONFIG.aiReplies){
+    if(text.includes(key)) reply = CONFIG.aiReplies[key];
+  }
+  setTimeout(()=>{
+    chat.innerHTML += `<div class="msg">الذكاء: ${reply}</div>`;
+    chat.scrollTop = chat.scrollHeight;
+  },500);
+  input.value='';
 }
 </script>
+
 </body>
 </html>
