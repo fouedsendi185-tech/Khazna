@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الملك الرقمي | الخزنة الملكية V13</title>
+<style>
+:root{--gold:#FFD700;--dark:#0a0a0a;--green:#25D366}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Tahoma}
+body{background:linear-gradient(135deg,#000,#1a1a1a);color:var(--gold);min-height:100vh;padding:20px}
+.container{max-width:900px;margin:0 auto}
+.header{text-align:center;padding:30px 0;border:2px solid var(--gold);border-radius:20px;margin-bottom:30px}
+h1{font-size:2.5rem;text-shadow:0 0 10px var(--gold)}
+.card{background:rgba(255,215,0,0.05);border:1px solid var(--gold);border-radius:15px;padding:25px;margin:20px 0}
+.btn{display:block;width:100%;padding:15px;margin:10px 0;background:linear-gradient(45deg,var(--gold),#FFA500);color:#000;border:none;border-radius:10px;font-size:18px;font-weight:bold;cursor:pointer;text-decoration:none;text-align:center}
+.btn:hover{transform:scale(1.02)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px}
+.tag{display:inline-block;background:var(--gold);color:#000;padding:5px 15px;border-radius:20px;margin:5px;font-size:14px}
+.whatsapp{position:fixed;bottom:20px;left:20px;background:var(--green);width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 0 20px var(--green)}
+.lang{position:absolute;top:20px;left:20px}
+select{background:#000;color:var(--gold);border:1px solid var(--gold);padding:8px;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="lang">
+<select id="langSelect" onchange="changeLang()">
+<option value="ar">العربية</option>
+<option value="en">English</option>
+<option value="fr">Français</option>
+</select>
+</div>
+<a href="https://wa.me/21624764833" class="whatsapp">💬</a>
+<div class="container">
+<div class="header">
+<h1 id="title">👑 الخزنة الملكية V13</h1>
+<p id="subtitle">الملك الرقمي - حلال 100%</p>
+</div>
+<div class="card">
+<h2 id="withdraw">💰 السحب الفوري - تونس</h2>
+<div class="grid">
+<a href="https://paypal.com" class="btn" id="paypal">PayPal - يدعم تونس</a>
+<a href="https://paysera.com" class="btn" id="paysera">Paysera - حساب بنكي أوروبي</a>
+<a href="https://binance.com" class="btn" id="usdt">USDT TRC20 - لحظي</a>
+</div>
+<p style="text-align:center;margin-top:15px;font-size:14px" id="note">كل الروابط تفتح مباشرة. لا وسيط لا عمولة</p>
+</div>
+<div class="card">
+<h2 id="currencies">💱 العملات الحلال المعتمدة</h2>
+<div>
+<span class="tag">USD دولار</span>
+<span class="tag">EUR يورو</span>
+<span class="tag">TND دينار تونسي</span>
+<span class="tag">USDT حلال</span>
+<span class="tag">SAR ريال سعودي</span>
+<span class="tag">AED درهم إماراتي</span>
+</div>
+</div>
+<div class="card">
+<h2 id="features">⚡ مميزات الملك الرقمي</h2>
+<p id="f1">✅ زر تعديل ساهل في CONFIG</p>
+<p id="f2">✅ لغات: عربي، انجليزي، فرنسي</p>
+<p id="f3">✅ متجاوب مع الهاتف 100%</p>
+<p id="f4">✅ حلال 100% - لا موسيقى لا صور نساء</p>
+<p id="f5">✅ سحب فوري بدون انتظار</p>
+</div>
+<div class="card">
+<h2>🔧 لوحة التحكم السريعة</h2>
+<p>لتعديل أي شيء: ابحث عن كلمة <code>CONFIG</code> في الكود وبدّل الأرقام والروابط</p>
+</div>
+</div>
+<script>
+const CONFIG = {
+whatsapp: "21624764833",
+paypal: "https://paypal.com",
+paysera: "https://paysera.com",
+usdt: "https://binance.com"
+};
+document.querySelector('.whatsapp').href = `https://wa.me/${CONFIG.whatsapp}`;
+document.getElementById('paypal').href = CONFIG.paypal;
+document.getElementById('paysera').href = CONFIG.paysera;
+document.getElementById('usdt').href = CONFIG.usdt;
+const translations = {
+ar: {title:"👑 الخزنة الملكية V13",subtitle:"الملك الرقمي - حلال 100%",withdraw:"💰 السحب الفوري - تونس",paypal:"PayPal - يدعم تونس",paysera:"Paysera - حساب بنكي أوروبي",usdt:"USDT TRC20 - لحظي",note:"كل الروابط تفتح مباشرة. لا وسيط لا عمولة",currencies:"💱 العملات الحلال المعتمدة",features:"⚡ مميزات الملك الرقمي",f1:"✅ زر تعديل ساهل في CONFIG",f2:"✅ لغات: عربي، انجليزي، فرنسي",f3:"✅ متجاوب مع الهاتف 100%",f4:"✅ حلال 100% - لا موسيقى لا صور نساء",f5:"✅ سحب فوري بدون انتظار"},
+en: {title:"👑 Royal Vault V13",subtitle:"Digital King - 100% Halal",withdraw:"💰 Instant Withdrawal - Tunisia",paypal:"PayPal - Supports Tunisia",paysera:"Paysera - European Bank",usdt:"USDT TRC20 - Instant",note:"All links open directly. No middleman no fees",currencies:"💱 Approved Halal Currencies",features:"⚡ Digital King Features",f1:"✅ Easy edit button in CONFIG",f2:"✅ Languages: Arabic, English, French",f3:"✅ 100% Mobile responsive",f4:"✅ 100% Halal - No music no women images",f5:"✅ Instant withdrawal"},
+fr: {title:"👑 Coffre Royal V13",subtitle:"Roi Numérique - 100% Halal",withdraw:"💰 Retrait Instantané - Tunisie",paypal:"PayPal - Supporte Tunisie",paysera:"Paysera - Banque Européenne",usdt:"USDT TRC20 - Instantané",note:"Tous les liens s'ouvrent directement. Sans intermédiaire",currencies:"💱 Devises Halal Approuvées",features:"⚡ Fonctionnalités Roi Numérique",f1:"✅ Bouton modif facile dans CONFIG",f2:"✅ Langues: Arabe, Anglais, Français",f3:"✅ 100% Responsive mobile",f4:"✅ 100% Halal - Pas musique pas images femmes",f5:"✅ Retrait instantané"}
+};
+function changeLang(){
+const lang = document.getElementById('langSelect').value;
+const t = translations;
+Object.keys(t).forEach(id => {
+if(document.getElementById(id)) document.getElementById(id).innerText = t[id];
+});
+document.documentElement.lang = lang;
+document.documentElement.dir = lang === 'ar'? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>
